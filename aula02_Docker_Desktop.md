@@ -24,3 +24,13 @@ sudo usermod -aG docker <seu_usuario>
 # Habilita o serviço do Docker
 sudo systemctl enable docker --now
 ```
+
+## Comandos Essenciais do Docker
+
+- **docker build -t <nome_da_imagem> .**: Este comando cria uma imagem Docker a partir de um Dockerfile. O -t define a tag (nome) da imagem, e o . indica que o Dockerfile está no diretório atual.
+
+- **docker images**: Lista todas as imagens Docker que você tem no seu sistema.
+
+- **docker ps**: Exibe os contêineres que estão em execução.
+
+- **docker run <nome_da_imagem>**: Inicia um contêiner a partir de uma imagem.
