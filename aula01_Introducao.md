@@ -102,3 +102,7 @@ Para entender a distinção, a analogia mais comum e precisa na Ciência da Comp
   ### 3.2 Orquestração com Docker Compose
 
 O ```docker-compose``` é uma ferramenta para definir e rodar aplicações multi-contêiner. Enquanto o comando ```docker run``` inicia um único contêiner, o Compose lê um arquivo YAML para subir toda a _stack_ de infraestrutura necessária.
+
+**Figura 1.  Arquitetura _Tradional vs Serverless_**
+
+![Arquitetura Tradional vs Serverless](images/traditional_vs_serverless_arch.jpeg)
