@@ -4,7 +4,7 @@
 
 ## 1. Introdução
 O nome **_Docker_** vem do inglês e possui dois significados principais que se relacionam diretamente com a função da tecnologia:
-- **Estivador (_Docker_):** Em inglês, "docker" é um termo para "estivador", que é o profissional responsável por carregar e descarregar navios, especialmente os contêineres. Essa é uma analogia perfeita, já que o Docker, como plataforma, é o "estivador" que empacota, transporta e executa os "contêineres" de software.
+- **Estivador (_Docker_):** Em inglês, "docker" é um termo para "estivador", que é o profissional responsável por carregar e descarregar navios, especialmente os contêineres. Essa é uma analogia perfeita, já que o Docker, como plataforma, é o "estivador" que empacota, transporta e executa os "contêineres" de _software_.
 - **Contêiner (_Container_)**: Embora "docker" não signifique diretamente "contêiner", a tecnologia **_Docker_** é fundamentalmente sobre contêineres de _software_. Esses contêineres são pacotes padronizados que incluem tudo o que um _software_ precisa para rodar (código, bibliotecas, configurações, etc.), garantindo que ele funcione de forma consistente em qualquer ambiente.
 
 A logo do **_Docker_**, uma baleia carregando contêineres, também reforça essa ideia de transporte e gerenciamento de contêineres, consolidando a analogia com o trabalho de um estivador.
