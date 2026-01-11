@@ -6,4 +6,21 @@ O Docker é uma plataforma de contêineres que permite empacotar uma aplicação
 
 O vídeo da aula 02 se concentra no passo a passo para instalar o **_Docker Desktop_** e o **_VS Code_** no Linux. O vídeo também mostra como usar o Git e algumas extensões importantes do VS Code para trabalhar de forma eficiente. O ponto alto é a demonstração de como criar um Dockerfile para uma aplicação Node.js, transformando-a em uma imagem Docker, que é o primeiro passo para a automação e a orquestração de ambientes.
 
-### 1.1 Exemplos Práticos com Comandos
+### 1.1 Exemplos Práticos com Comandos: Intalação do Docker
+
+Abaixo encontram-se os comandos necessários para a instalação do Docker em um sistema baseado em Debian/Ubuntu.
+
+```
+# Remove versões antigas do Docker
+sudo apt remove docker.io
+sudo apt autoremove
+
+# Adiciona o repositório Docker
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Adiciona seu usuário ao grupo do Docker para não precisar usar o sudo
+sudo usermod -aG docker <seu_usuario>
+
+# Habilita o serviço do Docker
+sudo systemctl enable docker --now
+```
