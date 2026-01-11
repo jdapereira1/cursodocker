@@ -16,7 +16,7 @@ Embora tanto **_Docker_** quanto máquinas virtuais (do Inglês, _Virtual Machin
 Uma **máquina virtual (MV)** é uma emulação de um computador físico completo. Pense nela como um computador dentro do seu computador.
 
 - **Camada de Virtualização:** Uma MV virtualiza o _hardware_ (CPU, memória, disco, rede). Para isso, ela usa um _software_ chamado **_Hypervisor_** (ou monitor de MV). O _Hypervisor_ cria e gerencia as _VMs_, alocando recursos do _hardware_ físico para cada uma delas.
-- **Sistema Operacional (SO) Convidado:** Cada MV executa um Sistema Operacional (SO) convidado completo (Windows, Linux, macOS, etc.) sobre o _Hypervisor_. Isso significa que cada MV tem seu próprio _kernel_, seus próprios processos de inicialização e suas próprias bibliotecas.
+- **Sistema Operacional (SO) Convidado:** Cada MV executa um Sistema Operacional (SO) convidado completo (_Windows, Linux, macOS_, etc.) sobre o _Hypervisor_. Isso significa que cada MV tem seu próprio _kernel_, seus próprios processos de inicialização e suas próprias bibliotecas.
 - **Isolamento:** As _VMs_ oferecem um isolamento robusto. Se uma MV for comprometida por um vírus, por exemplo, as outras _VMs_ no mesmo _host_ não serão afetadas, pois cada uma tem seu próprio SO isolado.
 - **Recursos:** Cada MV precisa de uma quantidade significativa de recursos (CPU, RAM, espaço em disco) para rodar seu SO convidado, mesmo que a aplicação em si seja pequena. Isso as torna mais "pesadas" e lentas para inicializar.
 - **Portabilidade:** _VMs_ são menos portáteis. Mover uma MV entre diferentes _hypervisors_ ou provedores de nuvem pode ser um desafio e, muitas vezes, requer reconfiguração.
