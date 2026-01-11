@@ -99,10 +99,112 @@ Para entender a distinção, a analogia mais comum e precisa na Ciência da Comp
   - **Estrutura Técnica:** Quando um contêiner é iniciado, o Docker pega a imagem (camadas _read-only_) e adiciona uma camada de leitura e escrita (_Read-Write Layer_) no topo. Todas as mudanças feitas no contêiner (arquivos criados, _logs_, modificações) acontecem apenas nessa camada superior efêmera.
   - **Isolamento:** Contêineres compartilham o _kernel_ do _host_, mas são isolados via _Namespaces_ (isolamento de processos, rede, usuários) e _Cgroups_ (controle de recursos como CPU e RAM).
 
-  ### 3.2 Orquestração com Docker Compose
+### 3.2 Orquestração com Docker Compose
 
 O ```docker-compose``` é uma ferramenta para definir e rodar aplicações multi-contêiner. Enquanto o comando ```docker run``` inicia um único contêiner, o Compose lê um arquivo YAML para subir toda a _stack_ de infraestrutura necessária.
 
-**Figura 1.  Arquitetura _Tradional vs Serverless_**
+**Figura 1 - Arquitetura _Tradional vs Serverless_.**
 
 ![Arquitetura Tradional vs Serverless](images/traditional_vs_serverless_arch.jpeg)
+
+#### 3.2.1 Como utilizar para um Servidor Web + Banco de Dados
+
+Deve ser criado um arquivo chamado ```docker-compose.yml``` na raiz do projeto. Abaixo, um exemplo técnico de uma aplicação Python (Flask) conectada a um PostgreSQL:
+
+```YAML
+version: '3.8'  # Versão da sintaxe do arquivo
+
+services:
+  # Serviço 1: Aplicação Web
+  web:
+    build: .  # Constrói a imagem baseada no Dockerfile local
+    ports:
+      - "5000:5000"  # Mapeia porta Host:Container
+    environment:
+      - DB_HOST=db
+      - DB_NAME=meubanco
+      - DB_USER=usuario
+      - DB_PASS=senha123
+    depends_on:
+      - db  # Garante que o container 'db' inicie antes do 'web'
+    networks:
+      - minha-rede
+
+  # Serviço 2: Banco de Dados
+  db:
+    image: postgres:15-alpine  # Usa imagem oficial leve (Alpine)
+    environment:
+      - POSTGRES_DB=meubanco
+      - POSTGRES_USER=usuario
+      - POSTGRES_PASSWORD=senha123
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Persistência de dados (Host:Container)
+    networks:
+      - minha-rede
+
+# Definição de volumes persistentes
+volumes:
+  pgdata:
+
+# Definição de redes para isolamento
+networks:
+  minha-rede:
+```
+
+#### 3.2.2 Conceitos Chave no Exemplo
+
+1. **Services:** Define os componentes da aplicação. O Docker cria um DNS interno, permitindo que o serviço ```web``` acesse o banco simplesmente usando o _hostname_ ```db```.
+2. **Volumes:** Essencial para bancos de dados. Se o contêiner ```db``` for destruído, os dados persistem no volume ```pgdata```.
+3. **Depends_on:** Controla a ordem de inicialização (embora não garanta que o serviço dentro do contêiner esteja pronto, apenas que o contêiner iniciou).
+
+Para a execução de tudo: ```docker-compose up -d``` (o _flag_ ```-d``` executa em modo _detached_, ou seja, em segundo plano).
+
+### 3.3 Principais Diretivas de um Dockerfile
+
+O ```Dockerfile``` é o _"blueprint"_ da sua imagem. A ordem das diretivas impacta diretamente o _cache_ de _build_ e o tamanho final da imagem.
+
+```FROM```
+
+- **Função:** Define a imagem base (ex: ubuntu:20.04, python:3.9-slim).
+- **Importância:** É o ponto de partida. Escolher imagens "alpine" ou "slim" reduz drasticamente a superfície de ataque e o tamanho do _download_.
+
+```WORKDIR```
+
+- **Função:** Define o diretório de trabalho dentro do contêiner para os comandos seguintes.
+- **Importância:** Evita o uso de caminhos absolutos repetitivos e garante organização. Equivalente ao comando ```cd```.
+
+```COPY``` vs ```ADD```
+
+- **Função:** Copiam arquivos do _host_ para a imagem.
+- **Importância:** Use preferencialmente COPY. O ADD tem funcionalidades extras (descompactar tarballs, baixar URLs) que podem causar comportamentos imprevisíveis se não forem necessárias.
+
+```RUN```
+
+- **Função:** Executa comandos durante o build da imagem (ex: apt-get install, pip install).
+- **Importância:** Cria uma nova camada na imagem. É vital encadear comandos (usando &&) para reduzir o número de camadas e limpar caches na mesma instrução para economizar espaço.
+
+```CMD``` vs ```ENTRYPOINT```
+
+- **Função:** Definem o comando executado quando o contêiner inicia.
+- **Importância:**
+  - ```CMD```: Define argumentos padrão que podem ser sobrescritos pelo usuário ao rodar ```docker run```.
+  - ```ENTRYPOINT```: Configura o contêiner para rodar como um executável. Argumentos passados no ```docker run``` são anexados a ele, não o substituem.
+
+```EXPOSE```
+
+- **Função:** Informa em qual porta a aplicação escuta.
+- **Importância:** Funciona mais como documentação. Não publica a porta para o host automaticamente (isso é feito no ```run``` com ```-p```), mas é crucial para comunicação entre contêineres e para quem lê o Dockerfile.
+
+---
+
+## 4. Desafios de Segurança e Mitigação
+
+Segurança em contêineres é um tópico crítico, pois um contêiner mal configurado pode dar acesso ao servidor _host_ (_breakout_).
+
+|Desafio|Explicação Técnica|Mitigação (_Best Practices_)|
+|:---:|:---:|:---:|
+|Execução como Root|Por padrão, processos no contêiner rodam como ```root```. Se houver uma vulnerabilidade no _runtime_, o atacante ganha privilégios de _root_ no _host_.|Utilize a diretiva ```USER``` no Dockerfile para criar e mudar para um usuário não privilegiado antes do comando final.|
+|Imagens Vulneráveis|Usar imagens base antigas ou desconhecidas que contêm CVEs (vulnerabilidades conhecidas) não corrigidas.|Use imagens oficiais e mínimas (ex: Alpine, Distroless). Utilize _scanners_ de segurança (como **Trivy**, **Clair** ou **Docker Scout**) no _pipeline_ de CI/CD.|
+|Superfície de Ataque|Imagens com ferramentas desnecessárias (compiladores, _debuggers_, _shell_) facilitam a vida do atacante dentro do contêiner.|Utilize **Multi-stage Builds**. Compile o código em um estágio com todas as ferramentas e copie apenas o binário/artefato final para uma imagem limpa de produção.|
+|Segredos Expostos|_Hardcoding_ de senhas, chaves de API ou _tokens_ dentro do Dockerfile ou variáveis de ambiente visíveis.|Nunca use ```ENV``` para senhas no _build_. Use **Docker Secrets** (em Swarm) ou injete segredos em tempo de execução via gerenciadores de segredos (Vault, AWS Secrets Manager).|
+|Recursos Ilimitados|Um contêiner comprometido ou com _bug_ (_memory leak_) pode consumir toda a CPU/RAM do _host_, causando Negação de Serviço (DoS).|Defina limites rígidos de recursos no ```docker-compose``` ou na execução (```--memory="512m" --cpus="1.0"```).|
