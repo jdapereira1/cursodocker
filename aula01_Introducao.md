@@ -3,7 +3,9 @@
 ## Aula 1 - INTRODUÇÃO
 
 ## 1. Introdução
+
 O nome **_Docker_** vem do inglês e possui dois significados principais que se relacionam diretamente com a função da tecnologia:
+
 - **Estivador (_Docker_):** Em inglês, "docker" é um termo para "estivador", que é o profissional responsável por carregar e descarregar navios, especialmente os contêineres. Essa é uma analogia perfeita, já que o Docker, como plataforma, é o "estivador" que empacota, transporta e executa os "contêineres" de _software_.
 - **Contêiner (_Container_)**: Embora "docker" não signifique diretamente "contêiner", a tecnologia **_Docker_** é fundamentalmente sobre contêineres de _software_. Esses contêineres são pacotes padronizados que incluem tudo o que um _software_ precisa para rodar (código, bibliotecas, configurações, etc.), garantindo que ele funcione de forma consistente em qualquer ambiente.
 
@@ -49,9 +51,10 @@ A escolha entre Docker e VMs depende das suas necessidades.
 É importante notar que **Docker pode ser executado dentro de uma Máquina Virtual**. Por exemplo, é comum executar o Docker Desktop em um Mac ou Windows, que por sua vez, usa uma MV Linux leve para rodar os contêineres. Isso combina a segurança da MV com a flexibilidade e eficiência dos contêineres.
 
 ---
+
 ## 2. Instalação do Docker no Linux
 
-Instalar o Docker no Linux é um processo bem direto, mas os comandos exatos podem variar um pouco dependendo da distribuição que você usa (Ubuntu, Fedora, CentOS, etc.). 
+Instalar o Docker no Linux é um processo bem direto, mas os comandos exatos podem variar um pouco dependendo da distribuição que você usa (Ubuntu, Fedora, CentOS, etc.).
 
 ### 2.1 Antes de Começar: Desinstalar Versões Antigas
 
@@ -61,22 +64,41 @@ Instalar o Docker no Linux é um processo bem direto, mas os comandos exatos pod
 
 Bash
 
-```
-sudo apt remove docker docker-engine docker.io containerd runc
+```sudo apt remove docker docker-engine docker.io containerd runc
 ```
 
 **Para CentOS/Fedora:**
 
 Bash
 
-```
-sudo yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
+```sudo yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine
 sudo dnf remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine # Para Fedora mais recente
 ```
 
-### 2.2 Processo de instalação:
+### 2.2 Processo de instalação
 
 A forma mais recomendada é usar o repositório oficial do Docker para garantir que sempre o recebimento das versões mais recentes e seguras.
 
 Seguir o tutorial apresentado no seguinte endereço eletrônico:
 [Install Docker Desktop on Linux](https://docs.docker.com/desktop/setup/install/linux/)
+
+---
+
+## 3. Tópicos Avançados
+
+### 3.1 A Diferença entre "Imagem" e "Contêiner"
+
+Para entender a distinção, a analogia mais comum e precisa na Ciência da Computação é a da Programação Orientada a Objetos (POO): **A Imagem é a Classe, e o Contêiner é o Objeto (instância)**.
+
+- **Imagem (_Docker Image_):**
+  - **Definição:** É um pacote executável leve, autônomo e imutável que inclui tudo o que é necessário para executar um pedaço de software: código, runtime, bibliotecas, variáveis de ambiente e arquivos de configuração.
+  - **Estrutura Técnica:** Uma imagem é composta por múltiplas camadas (_layers_) de somente leitura (_Read-Only_). Cada instrução no Dockerfile cria uma nova camada que é empilhada sobre a anterior. Isso utiliza um sistema de arquivos **_Union File System_ (_UnionFS_)**, que permite combinar essas camadas em uma única visualização coesa.
+  - **Estado:** _Build-time_ (tempo de construção). Ela não está "rodando"; é o artefato estático armazenado em um registro (como o _Docker Hub_).
+- **Contêiner (_Docker Container_):**
+  - **Definição:** É uma instância em tempo de execução (_runtime_) de uma imagem. É o ambiente onde a aplicação realmente opera.
+  - **Estrutura Técnica:** Quando um contêiner é iniciado, o Docker pega a imagem (camadas _read-only_) e adiciona uma camada de leitura e escrita (_Read-Write Layer_) no topo. Todas as mudanças feitas no contêiner (arquivos criados, _logs_, modificações) acontecem apenas nessa camada superior efêmera.
+  - **Isolamento:** Contêineres compartilham o _kernel_ do _host_, mas são isolados via _Namespaces_ (isolamento de processos, rede, usuários) e _Cgroups_ (controle de recursos como CPU e RAM).
+
+  ### 3.2 Orquestração com Docker Compose
+
+O ```docker-compose``` é uma ferramenta para definir e rodar aplicações multi-contêiner. Enquanto o comando ```docker run``` inicia um único contêiner, o Compose lê um arquivo YAML para subir toda a _stack_ de infraestrutura necessária.
