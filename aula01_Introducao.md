@@ -208,3 +208,45 @@ Segurança em contêineres é um tópico crítico, pois um contêiner mal config
 |Superfície de Ataque|Imagens com ferramentas desnecessárias (compiladores, _debuggers_, _shell_) facilitam a vida do atacante dentro do contêiner.|Utilize **Multi-stage Builds**. Compile o código em um estágio com todas as ferramentas e copie apenas o binário/artefato final para uma imagem limpa de produção.|
 |Segredos Expostos|_Hardcoding_ de senhas, chaves de API ou _tokens_ dentro do Dockerfile ou variáveis de ambiente visíveis.|Nunca use ```ENV``` para senhas no _build_. Use **Docker Secrets** (em Swarm) ou injete segredos em tempo de execução via gerenciadores de segredos (Vault, AWS Secrets Manager).|
 |Recursos Ilimitados|Um contêiner comprometido ou com _bug_ (_memory leak_) pode consumir toda a CPU/RAM do _host_, causando Negação de Serviço (DoS).|Defina limites rígidos de recursos no ```docker-compose``` ou na execução (```--memory="512m" --cpus="1.0"```).|
+
+---
+
+## 5. Softwares Adicionais
+
+### 5.1 Git
+
+**Git e GitHub Desktop**
+- Instalar o Git e GitHub Desktop no SO utilizado
+- Configurar via terminal: 
+  - git config --global user.name "xxxx"
+  - git config --global user.email "xxxx@xxx"
+
+### 5.2 Extensões do VsCode
+
+- C/C++
+- C/C++ Extension Pack
+- C/C++ Themes
+- CMake Tools
+- Debugger for Java
+- Extension Pack for Java
+- GitHub Copilot Chat
+- GitHub Pull Requests
+- Gradle for Java
+- Jupyter
+- Jupyter Cell Tags
+- Jupyter Keymap
+- Jupyter Notebook Renderers
+- Jupyter Slide Show
+- Language Support for Java(TM) by Red Hat
+- Markdown Preview Github Styling
+- Material Icon Theme
+- Maven for Java
+- PlatformIO IDE
+- Portuguese (Brazil) Language Pack for Visual Studio Code
+- Prettier - Code formatter
+- Project Manager for Java
+- Pylance
+- Python
+- Python Debugger
+- Python Environments
+- Test Runner for Java
