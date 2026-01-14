@@ -4,6 +4,8 @@
 
 **Imagem** é o molde/_blueprint_ (somente leitura) de uma aplicação com código e dependências, enquanto o **contêiner** é a instância viva e executável dessa imagem, um ambiente isolado que roda o _software_, permitindo modificações (como arquivos criados) que não afetam a imagem original, que pode ser usada para criar vários contêineres.
 
+---
+
 ## 2. Conceitos Essenciais e Comandos
 
 A grande diferença entre Contêineres vs. Máquinas Virtuais (_VMs_):
@@ -29,3 +31,8 @@ O **Dockerfile** é a "receita" para construir sua imagem. É essencial conhecer
 - **docker images**: Lista as imagens que você tem no seu sistema.
 - **docker run <nome_da_imagem>**: Cria e inicia um contêiner a partir de uma imagem.
 - **docker ps**: Lista os contêineres que estão em execução.
+
+---
+
+## 3. Tópicos Avançados
+
