@@ -25,7 +25,9 @@ sudo usermod -aG docker <seu_usuario>
 sudo systemctl enable docker --now
 ```
 
-## Comandos Essenciais do Docker
+---
+
+## 2. Comandos Essenciais do Docker
 
 - **docker build -t <nome_da_imagem> .**: Este comando cria uma imagem Docker a partir de um Dockerfile. O -t define a tag (nome) da imagem, e o . indica que o Dockerfile está no diretório atual.
 
@@ -38,9 +40,9 @@ sudo systemctl enable docker --now
 ---
 
 
-## 2. Tópicos Avançados
+## 3. Tópicos Avançados
 
-### 2.1 A Diferença entre "Imagem" e "Contêiner"
+### 3.1 A Diferença entre "Imagem" e "Contêiner"
 
 Para entender a distinção, a analogia mais comum e precisa na Ciência da Computação é a da Programação Orientada a Objetos (POO): **A Imagem é a Classe, e o Contêiner é o Objeto (instância)**.
 
@@ -53,7 +55,7 @@ Para entender a distinção, a analogia mais comum e precisa na Ciência da Comp
   - **Estrutura Técnica:** Quando um contêiner é iniciado, o Docker pega a imagem (camadas _read-only_) e adiciona uma camada de leitura e escrita (_Read-Write Layer_) no topo. Todas as mudanças feitas no contêiner (arquivos criados, _logs_, modificações) acontecem apenas nessa camada superior efêmera.
   - **Isolamento:** Contêineres compartilham o _kernel_ do _host_, mas são isolados via _Namespaces_ (isolamento de processos, rede, usuários) e _Cgroups_ (controle de recursos como CPU e RAM).
 
-### 2.2 Orquestração com Docker Compose
+### 3.2 Orquestração com Docker Compose
 
 O ```docker-compose``` é uma ferramenta para definir e rodar aplicações multi-contêiner. Enquanto o comando ```docker run``` inicia um único contêiner, o Compose lê um arquivo YAML para subir toda a _stack_ de infraestrutura necessária.
 
@@ -61,7 +63,7 @@ O ```docker-compose``` é uma ferramenta para definir e rodar aplicações multi
 
 ![Arquitetura Tradional vs Serverless](images/traditional_vs_serverless_arch.jpeg)
 
-#### 2.2.1 Como utilizar para um Servidor Web + Banco de Dados
+#### 3.2.1 Como utilizar para um Servidor Web + Banco de Dados
 
 Deve ser criado um arquivo chamado ```docker-compose.yml``` na raiz do projeto. Abaixo, um exemplo técnico de uma aplicação Python (Flask) conectada a um PostgreSQL:
 
@@ -105,7 +107,7 @@ networks:
   minha-rede:
 ```
 
-#### 2.2.2 Conceitos Chave no Exemplo
+#### 3.2.2 Conceitos Chave no Exemplo
 
 1. **Services:** Define os componentes da aplicação. O Docker cria um DNS interno, permitindo que o serviço ```web``` acesse o banco simplesmente usando o _hostname_ ```db```.
 2. **Volumes:** Essencial para bancos de dados. Se o contêiner ```db``` for destruído, os dados persistem no volume ```pgdata```.
@@ -113,7 +115,7 @@ networks:
 
 Para a execução de tudo: ```docker-compose up -d``` (o _flag_ ```-d``` executa em modo _detached_, ou seja, em segundo plano).
 
-### 2.3 Principais Diretivas de um Dockerfile
+### 3.3 Principais Diretivas de um Dockerfile
 
 O ```Dockerfile``` é o _"blueprint"_ da sua imagem. A ordem das diretivas impacta diretamente o _cache_ de _build_ e o tamanho final da imagem.
 
@@ -151,7 +153,7 @@ O ```Dockerfile``` é o _"blueprint"_ da sua imagem. A ordem das diretivas impac
 
 ---
 
-## 3. Desafios de Segurança e Mitigação
+## 4. Desafios de Segurança e Mitigação
 
 Segurança em contêineres é um tópico crítico, pois um contêiner mal configurado pode dar acesso ao servidor _host_ (_breakout_).
 
