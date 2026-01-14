@@ -96,13 +96,17 @@ Seguir o tutorial apresentado no seguinte endereço eletrônico:
   - git config --global user.name "xxxx"
   - git config --global user.email "xxxx@xxx"
 
-### 3.2 Extensões do VsCode
+### 3.2 VSCode
+
+#### 3.2.1 Extensões do VsCode
 
 - C/C++
 - C/C++ Extension Pack
 - C/C++ Themes
+- Container Tools
 - CMake Tools
 - Debugger for Java
+- Docker
 - Extension Pack for Java
 - GitHub Copilot Chat
 - GitHub Pull Requests
